@@ -1,0 +1,300 @@
+<?php
+// Load translation data
+$this->i18nTheme();
+
+//HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries
+$this->js(array(
+    pi::url('static/js/html5shiv.js') => array(
+        'conditional' => 'lt IE 9'
+    ),
+    pi::url('static/js/respond.min.js') => array(
+        'conditional' => 'lt IE 9'
+    ),
+));
+
+// Load jQuery
+$this->jquery();
+
+// Load Bootstrap css/js and font-awesome
+$this->bootstrap(array(
+    'js/bootstrap.min.js',
+    'font-awesome/css/font-awesome.min.css'
+));
+
+// Load front.css
+$this->css(array(
+    $this->assetLocale('style.css'),
+    $this->assetTheme('css/front.css'),
+));
+
+// Apple icons
+// Apple icon for iphone
+$this->headLink(array(
+    'rel'   => 'apple-touch-icon',
+    'href'  => $this->assetTheme('image/touch-icon-iphone.png')
+));
+// Apple icon for ipad
+$this->headLink(array(
+    'rel'   => 'apple-touch-icon',
+    'sizes' => '72x72',
+    'href'  => $this->assetTheme('image/touch-icon-ipad.png')
+));
+// Apple icon for iphone retina
+$this->headLink(array(
+    'rel'   => 'apple-touch-icon',
+    'sizes' => '114x114',
+    'href'  => $this->assetTheme('image/touch-icon-iphone-retina.png')
+));
+// Apple icon for ipad retina
+$this->headLink(array(
+    'rel'   => 'apple-touch-icon',
+    'sizes' => '114x114',
+    'href'  => $this->assetTheme('image/touch-icon-ipad-retina.png')
+));
+
+// Meta Viewport Tag
+$this->headMeta('width=device-width, initial-scale=1.0', 'viewport');
+
+// Explicitly load favicon
+$this->headLink(array(
+    'rel' => 'shortcut icon',
+    'href' => $this->favicon(),
+));
+
+// Load google analytics code
+$this->ga();
+
+// current module
+$module = Pi::service('module')->current();
+
+// Load nav
+$navigation = $this->nav('front');
+
+// Load blocks
+$blocks = $this->blocks();
+$blockTemplate = $this->template('block');
+
+?>
+<!DOCTYPE HTML>
+<html lang="<?php echo $locale; ?>">
+<head>
+<meta charset="<?php echo $charset; ?>">
+<?php echo $this->assemble('headTitle'); ?>
+<?php echo $this->assemble('headMeta'); ?>
+<meta property="dc:title" lang="<?php echo $locale; ?>" content="<?php echo $this->escape($sitename); ?>">
+<meta property="dc:publisher" content="<?php echo $this->escape($sitename); ?>">
+<meta property="dc:subject" lang="<?php echo $locale; ?>" content="<?php echo $this->escape($slogan); ?>">
+<meta property="dc:description" lang="<?php echo $locale; ?>" content="">
+<meta property="dc:type" content="Text">
+<meta property="dc:language" content="<?php echo $locale; ?>">
+<?php echo $this->assemble('headLink'); ?>
+<?php echo $this->assemble('headStyle'); ?>
+<?php echo $this->assemble('headScript'); ?>
+</head>
+<body id="pi-<?php echo $module; ?>" class="pi-locale-<?php echo $locale; ?>">
+    <header id="pi-header">
+        <nav id="pi-nav" class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="row">   
+                    <div class="navbar-header">
+                        <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <h1><a class="navbar-brand" title="<?php echo _escape($sitename); ?>" href="<?php echo $this->url('home'); ?>"><?php echo _escape($sitename); ?></a></h1>
+                    </div>
+                    <div class="navbar-collapse collapse">
+                        <?php echo $navigation->menu()->setUlClass('nav navbar-nav pi-navbar-nav'); ?>
+                        <div class="pull-left"><?php echo $this->widget('system-user-bar'); ?></div>
+                    </div>
+                </div>
+            </div>        
+        </nav>
+        <div class="container">
+            <div class="row">         
+                <div id="pi-header-body">
+                    <div class="col-md-6 col-sm-6 col-xs-6">
+                        <div id="pi-social">
+                            <ul class="list-inline text-right">
+                                <li class="hidden-xs hidden-sm"><a title="دریافت نرم افزار اندروید" href="http://new.lovelyfoods.com/page/download/"><img src="<?php echo $this->assetTheme('image/googleplay.png'); ?>" alt="دریافت نرم افزار اندروید"></a></li>
+                                <li id="pi-social-twitter"><a title="" href=""><i class="fa fa-twitter-square"></i></a></li>
+                                <li id="pi-social-facebook"><a title="" href=""><i class="fa fa-facebook-square"></i></a></li>
+                                <li id="pi-social-google"><a title="" href=""><i class="fa fa-google-plus-square"></i></a></li>
+                                <li id="pi-social-rss"><a title="" href=""><i class="fa fa-rss-square"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-6">
+                        <div id="pi-header-logo" class="text-left">
+                            <h2>
+                                <a title="<?php echo _escape($sitename); ?>" href="<?php echo $this->url('home'); ?>">
+                                    <span class="hidden-xs hidden-sm"> LovelyFoods </span>
+                                    <img src="<?php echo $this->logo(); ?>" alt="<?php echo _escape($sitename); ?>">
+                                </a>
+                            </h2>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <section id="pi-section">
+        <div class="container">
+            <div class="row">
+                <!--[if lt IE 9]>
+                <div class="col-md-12">
+                    <div id="pi-ie-error" class="alert alert-danger">
+                        <h4>خطا در نمایش وب سایت</h4>
+                        <p>مرورگر اینترنت شما قدیمی است و از تکنولوژی های جدید وب پشتیبانی نمی کند. در نتیجه ممکن است صفحات این وب سایت را به طور صحیح مشاهده نفرمایید. برای استفاده از این وب سایت ومشاهده صفحات به بهترین شکل ممکن ، لطفا مرورگر خود را به روز نمایید.</p>
+                        <p>شما میتوانید از مرورگر های <strong><a href="http://www.mozilla.org/en-US/firefox/new/" >فایرفاکس</a></strong> یا <strong><a href="http://www.google.com/chrome">گوگل کروم</a></strong> استفاده نمایید.</p>
+                    </div>
+                </div>
+                <![endif]-->
+            </div>
+            <!-- Flash messenger -->
+            <?php include $this->template('flash-messenger'); ?>
+            <!-- Top head zone -->
+            <?php if (!empty($blocks['0'])) { ?>
+            <div class="pi-zone-0">
+                <?php foreach ($blocks['0'] as $block) {
+                    include $blockTemplate;
+                } ?>
+            </div>
+            <?php } ?>
+            <div class="row">
+            <!-- Left zone -->
+            <?php if (!empty($blocks['1'])) { ?>
+            <div class="pi-zone-1 col-md-3">
+                <?php foreach ($blocks['1'] as $block) {
+                    include $blockTemplate;
+                } ?>
+            </div>
+            <?php } ?>
+            <div class="<?php
+                if (isset($blocks['1']) && isset($blocks['8'])) {
+                    echo 'col-md-6';
+                } elseif (isset($blocks['1']) || isset($blocks['8'])) {
+                    echo 'col-md-9';
+                } else {
+                    echo 'col-md-12';
+                }
+                ?>">
+                <!-- Center top zone -->
+                <?php if (isset($blocks['2'])) { ?>
+                <div class="pi-zone-2">
+                    <?php foreach ($blocks['2'] as $block) {
+                        include $blockTemplate;
+                    } ?>
+                </div>
+                <?php } ?>
+                <?php if (isset($blocks['3']) || isset($blocks['4'])) { ?>
+                <div class="row">
+                    <div class="col-md-6 pi-zone-3">
+                        <?php
+                        if (isset($blocks['3'])) { 
+                            foreach ($blocks['3'] as $block) {
+                                include $blockTemplate;
+                            }
+                        } 
+                        ?>
+                    </div>
+                    <div class="col-md-6 pi-zone-4">
+                        <?php
+                        if (isset($blocks['4'])) { 
+                            foreach ($blocks['4'] as $block) {
+                                include $blockTemplate;
+                            }
+                        } 
+                        ?>
+                    </div>
+                </div>
+                <?php } ?>
+
+                <!-- Module content starts -->
+                <?php if (!empty($content)) { ?>
+                <div class="pi-module-content">
+                    <?php echo $content; ?>
+                </div>
+                <?php echo Pi::service('comment')->load(array('options' => array('type' => 'js'))); ?>
+                <?php } ?>
+                <!-- Module content ends -->
+
+                <?php if (isset($blocks['5']) || isset($blocks['6'])) { ?>
+                <div class="row">
+                    <div class="col-md-6 pi-zone-5">
+                        <?php
+                        if (isset($blocks['5'])) { 
+                            foreach ($blocks['5'] as $block) {
+                                include $blockTemplate;
+                            }
+                        } 
+                        ?>
+                    </div>
+                    <div class="col-md-6 pi-zone-6">
+                        <?php
+                        if (isset($blocks['6'])) { 
+                            foreach ($blocks['6'] as $block) {
+                                include $blockTemplate;
+                            }
+                        } 
+                        ?>
+                    </div>
+                </div>
+                <?php } ?>
+                <!-- Center bottom zone -->
+                <?php if (isset($blocks['7'])) { ?>
+                <div class="pi-zone-7">
+                    <?php foreach ($blocks['7'] as $block) {
+                        include $blockTemplate;
+                    } ?>
+                </div>
+                <?php } ?>
+            </div>
+            <!-- Right zone -->
+            <?php if (isset($blocks['8'])) { ?>
+            <div class="col-md-3 pi-zone-8">
+                <?php foreach ($blocks['8'] as $block) {
+                    include $blockTemplate;
+                } ?>
+            </div>
+            <?php } ?>
+        </div>
+        </div>
+    </section>
+    <footer id="pi-footer">
+        <!-- Bottom foot zone -->
+        <?php if (isset($blocks['99'])) { ?>
+        <div id="pi-footer-block" class="pi-zone-99">
+            <div class="container">
+                <div class="row">
+                <?php foreach ($blocks['99'] as $block) {
+                    include $blockTemplate;
+                } ?>
+                </div>
+            </div>  
+        </div>
+        <?php } ?>
+        <div id="pi-footer-top">
+            <ul class="list-inline text-center">
+                <li><h5><a title="اصناف" href="http://new.lovelyfoods.com/guide">اصناف</a></h5></li>
+                <li><h5><a title="جستجو" href="http://new.lovelyfoods.com/guide/search">جستجو</a></h5></li>
+                <li><h5><a title="هنر آشپزی" href="http://new.lovelyfoods.com/">هنر آشپزی</a></h5></li>
+                <li><h5><a title="ثبت رستوران" href="http://new.lovelyfoods.com/">ثبت رستوران</a></h5></li>
+                <li><h5><a title="دریافت فایل" href="http://new.lovelyfoods.com/page/download/">دریافت فایل</a></h5></li>
+                <li><h5><a title="وبلاگ" href="http://new.lovelyfoods.com/news/topic/blog">وبلاگ</a></h5></li>
+                <li><h5><a title="درباره ما" href="http://new.lovelyfoods.com/page/about/">درباره ما</a></h5></li>
+                <li><h5><a title="تماس با ما" href="http://new.lovelyfoods.com/contact">تماس با ما</a></h5></li>
+            </ul>
+        </div>
+        <div id="pi-footer-bottom">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 text-right" rel="copyright"> کلیه حقوق مادی و معنوی متعلق به وب سایت <a title="غذاهای دوست داشتنی" href="http://www.lovelyfoods.com/">غذاهای دوست داشتنی</a> می باشد </div>
+                    <div class="col-md-6 text-left" rel="copyright">طراحی و توسعه <a title="فراگسترش" href="http://www.faragostaresh.com">فراگسترش</a></div>
+                </div>
+            </div>  
+        </div>
+    </footer>
+    <?php echo $this->assemble('footScript', 4); ?>        
+</body>
+</html>
